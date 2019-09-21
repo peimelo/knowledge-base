@@ -1,5 +1,8 @@
 # Table of contents
 
 * [Initial page](README.md)
-* [VS Code](vs-code.md)
+
+## IDE
+
+* [VS Code](ide/vs-code.md)
 
