@@ -18,7 +18,7 @@ To install VS Code go to [https://code.visualstudio.com/Download](https://code.v
 
 > This extension pack for Visual Studio Code adds extensions that are amazingly useful for Angular development.
 
-#### Included
+Included
 
 Here is the list of extensions the pack includes:
 
@@ -37,9 +37,33 @@ Here is the list of extensions the pack includes:
 | TSLint | [![Badge for version for Visual Studio Code extension Angular.ng-template](https://vsmarketplacebadge.apphb.com/version-short/ms-vscode.vscode-typescript-tslint-plugin.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin&wt.mc_id=angularessentials-github-jopapa) [![Installs](https://vsmarketplacebadge.apphb.com/installs-short/ms-vscode.vscode-typescript-tslint-plugin.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) [![Rating](https://vsmarketplacebadge.apphb.com/rating-short/ms-vscode.vscode-typescript-tslint-plugin.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) |
 | Winter is Coming | [![Badge for version for Visual Studio Code extension Angular.ng-template](https://vsmarketplacebadge.apphb.com/version-short/johnpapa.winteriscoming.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.winteriscoming&wt.mc_id=angularessentials-github-jopapa) [![Installs](https://vsmarketplacebadge.apphb.com/installs-short/johnpapa.winteriscoming.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.winteriscoming) [![Rating](https://vsmarketplacebadge.apphb.com/rating-short/johnpapa.winteriscoming.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.winteriscoming) |
 
-### [Bracket Pair Colorizer](https://marketplace.visualstudio.com/items?itemName=CoenraadS.bracket-pair-colorizer)
+#### [angular2-switcher](https://marketplace.visualstudio.com/items?itemName=infinity1207.angular2-switcher)
+
+> Easily navigate to component's files in angular2 project.
+
+### GIT
+
+#### [Git Blame](https://marketplace.visualstudio.com/items?itemName=waderyan.gitblame)
+
+> See git blame information in the status bar.
+
+#### [Git History](https://marketplace.visualstudio.com/items?itemName=donjayamanne.githistory)
+
+> View git log, file history, compare branches or commits
+
+#### [GitLens — Git supercharged](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
+
+> Supercharge the Git capabilities built into Visual Studio Code — Visualize code authorship at a glance via Git blame annotations and code lens, seamlessly navigate and explore Git repositories, gain valuable insights via powerful comparison commands, and so much more
+
+### Others
+
+#### [Bracket Pair Colorizer](https://marketplace.visualstudio.com/items?itemName=CoenraadS.bracket-pair-colorizer)
 
 > A customizable extension for colorizing matching brackets
+
+#### [Path Intellisense](https://marketplace.visualstudio.com/items?itemName=christian-kohler.path-intellisense)
+
+> Visual Studio Code plugin that autocompletes filenames
 
 
 
