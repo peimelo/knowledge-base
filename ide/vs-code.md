@@ -65,5 +65,28 @@ Here is the list of extensions the pack includes:
 
 > Visual Studio Code plugin that autocompletes filenames
 
+## Settings
 
+```text
+{
+    ...
+    "editor.fontFamily": "Fira Code",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 16,
+    "editor.minimap.enabled": false,
+    "editor.tabSize": 2,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+    },
+    ...
+}
+
+```
+
+### FiraCode
+
+> Monospaced font with programming ligatures
+
+#### [Installing](https://github.com/tonsky/FiraCode/wiki/Installing)
 
