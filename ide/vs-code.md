@@ -67,6 +67,8 @@ Here is the list of extensions the pack includes:
 
 ## Settings
 
+CTRL+Shift
+
 ```text
 {
     ...
