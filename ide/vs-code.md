@@ -70,15 +70,90 @@ Here is the list of extensions the pack includes:
 ```text
 {
     ...
-    "editor.fontFamily": "Fira Code",
-    "editor.fontLigatures": true,
-    "editor.fontSize": 16,
-    "editor.minimap.enabled": false,
-    "editor.tabSize": 2,
-    "javascript.updateImportsOnFileMove.enabled": "always",
+    "editor.autoIndent": true,
     "editor.codeActionsOnSave": {
         "source.organizeImports": true
     },
+    "editor.codeLens": false,
+    "editor.cursorBlinking": "solid",
+    "editor.cursorSmoothCaretAnimation": true,
+    "editor.cursorStyle": "line",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 18,
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": false,
+    "editor.formatOnSave": true,
+    "editor.letterSpacing": 0.5,
+    "editor.lineHeight": 25,
+    "editor.minimap.enabled": false,
+    "editor.renderWhitespace": "none",
+    "editor.tabCompletion": "on",
+    "editor.tabSize": 2,
+    "editor.wordWrap": "off",
+    "files.trimTrailingWhitespace": true,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "peacock.favoriteColors": [
+        {
+            "name": "Angular Red",
+            "value": "#b52e31"
+        },
+        {
+            "name": "Auth0 Orange",
+            "value": "#eb5424"
+        },
+        {
+            "name": "Azure Blue",
+            "value": "#007fff"
+        },
+        {
+            "name": "C# Purple",
+            "value": "#68217A"
+        },
+        {
+            "name": "Gatsby Purple",
+            "value": "#639"
+        },
+        {
+            "name": "Go Cyan",
+            "value": "#5dc9e2"
+        },
+        {
+            "name": "Java Blue-Gray",
+            "value": "#557c9b"
+        },
+        {
+            "name": "JavaScript Yellow",
+            "value": "#f9e64f"
+        },
+        {
+            "name": "Mandalorian Blue",
+            "value": "#1857a4"
+        },
+        {
+            "name": "Node Green",
+            "value": "#215732"
+        },
+        {
+            "name": "React Blue",
+            "value": "#00b3e6"
+        },
+        {
+            "name": "Something Different",
+            "value": "#832561"
+        },
+        {
+            "name": "Vue Green",
+            "value": "#42b883"
+        }
+    ],
+    "prettier.singleQuote": true,
+    "prettier.printWidth": 100,
+    "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\bin\\bash.exe",
+    "terminal.integrated.fontFamily": "monospace",
+    "[typescript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "workbench.iconTheme": "material-icon-theme"
     ...
 }
 
