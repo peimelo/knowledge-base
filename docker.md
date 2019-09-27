@@ -69,6 +69,8 @@ $ docker run -i -t --rm -v ${PWD}:/usr/src/app ruby:2.6 bash
 
 Create a Dockerfile with:
 
+{% code-tabs %}
+{% code-tabs-item title="Dockerfile" %}
 ```text
 FROM ruby:2.6
   
@@ -85,6 +87,8 @@ WORKDIR /usr/src/app
 RUN bundle install
 RUN yarn install
 ```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
 
 ### Building Our Image
 
@@ -104,10 +108,78 @@ $ docker images
 Image ID in hand, we can start our Rails app inside a container based on our custom image with the following command. Let’s run it now:
 
 ```text
-docker run -p 3000:3000 1234567890 bin/rails s -b 0.0.0.0
+$ docker run -p 3000:3000 123456789999 bin/rails s -b 0.0.0.0
 ```
 
 ## Fine-Tuning Our Rails Image
 
+```text
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+<none>              <none>              123456789999        8 minutes ago       1.1GB
 
+$ docker tag 123456789999 railsapp
+
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+railsapp            latest              123456789999        10 minutes ago      1.1GB
+
+$ docker tag railsapp railsapp:1.0
+
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+railsapp            1.0                 123456789999        11 minutes ago      1.1GB
+```
+
+Rather than tagging images after they’ve been built, we can tag them when we build the image using the `-t` option:
+
+```text
+$ docker build -t railsapp -t railsapp:1.0 .
+```
+
+Having named our image, we’re now able to start our Rails server using the image name, like so:
+
+```text
+$ docker run -p 3000:3000 railsapp bin/rails s -b 0.0.0.0
+
+OR
+
+$ docker run -p 3000:3000 railsapp:1.0 bin/rails s -b 0.0.0.0
+```
+
+### A Default Command
+
+{% code-tabs %}
+{% code-tabs-item title="Dockerfile" %}
+```text
+FROM ruby:2.6
+  
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update -yqq
+RUN apt-get install -yqq --no-install-recommends nodejs
+RUN apt-get install -yqq yarn
+
+COPY . /usr/src/app/
+
+WORKDIR /usr/src/app
+
+RUN bundle install
+RUN yarn install
+
+CMD ["bin/rails", "s", "-b", "0.0.0.0"]
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+```text
+$ docker build -t railsapp .
+$ docker run -p 3000:3000 railsapp
+```
+
+It’s important to note that the `CMD` instruction just provides a default command—you can specify a different one when you issue the docker run command. For example, to list our Rake tasks, we’d run:
+
+```text
+$ docker run --rm railsapp bin/rails -T
+```
 
