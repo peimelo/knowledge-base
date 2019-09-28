@@ -183,3 +183,64 @@ It’s important to note that the `CMD` instruction just provides a default comm
 $ docker run --rm railsapp bin/rails -T
 ```
 
+### Ignoring Unnecessary Files
+
+{% code-tabs %}
+{% code-tabs-item title=".dockkerignore" %}
+```text
+# GIT
+.git
+.gitignore
+
+# Logs
+log/*
+
+# Temp files
+tmp/*
+
+# Editor temp files
+*.swp
+*.swo
+
+
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+After that, let's rebuild our image:
+
+```text
+$ docker build -t railsapp .
+```
+
+### Caching Issue 1: Updating Packages
+
+{% code-tabs %}
+{% code-tabs-item title="Dockerfile" %}
+```text
+FROM ruby:2.6
+
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | \
+  apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | \
+  tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends \
+  nodejs \
+  yarn
+
+COPY . /usr/src/app/
+
+WORKDIR /usr/src/app
+
+RUN bundle install
+RUN yarn install
+
+CMD ["bin/rails", "s", "-b", "0.0.0.0"]
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+### Caching Issue 2: Unnecessary Gem Installs
+
+
+
