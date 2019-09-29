@@ -275,3 +275,21 @@ CMD ["bin/rails", "s", "-b", "0.0.0.0"]
 
 ## Describing Our App Declaratively with Docker Compose
 
+### Getting Started with Compose
+
+{% code-tabs %}
+{% code-tabs-item title="docker-compose.yml" %}
+```text
+version: '3'
+
+services:
+
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
