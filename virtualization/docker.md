@@ -293,3 +293,94 @@ services:
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
+[Compose Versioning](https://docs.docker.com/compose/compose-file/compose-versioning/)
+
+### Lauching Our App
+
+Add the following line to the top of your `config/boot.rb` file:
+
+{% code-tabs %}
+{% code-tabs-item title="config/boot.rb" %}
+```text
+$stdout.sync = true
+
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+```text
+$ docker-compose up
+
+# -d is detaching mode, then the output is hide
+$ docker-compose up -d
+
+$ docker-compose stop
+```
+
+### Mounting a Local Volume
+
+A mounted local volume represents some filesystem that’s shared between your local machine and the container:
+
+{% code-tabs %}
+{% code-tabs-item title="docker-compose.yml" %}
+```text
+version: '3'
+
+services:
+
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+	volumes:
+	  - .:/usr/src/app
+
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+### Starting and Stopping Services
+
+```text
+# what containers are currently running
+$ docker-compose ps
+
+# to target a particular service (web, etc):
+$ docker-compose start <service_name>
+$ docker-compose restart <service_name>
+$ docker-compose stop <service_name>
+
+$ docker-compose [start|stop|kill|restart|pause|unpause|rm] \
+  <service name>
+
+```
+
+### Viewing the Container Logs
+
+```text
+# -f to follow the output
+$ docker-compose logs -f web
+```
+
+### Rebuilding Our Images
+
+```text
+$ docker-compose build web
+```
+
+### Clean Up After Ourselves
+
+```text
+$ docker container prune
+$ docker image prune
+$ docker system prune
+```
+
+[Image Prune](https://docs.docker.com/engine/reference/commandline/image_prune/)
+
+[Container Prune](https://docs.docker.com/engine/reference/commandline/container_prune/)
+
+[System Prune](https://docs.docker.com/engine/reference/commandline/system_prune/)
+
+## Beyond the App: Adding Redis
+
