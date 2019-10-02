@@ -384,3 +384,37 @@ $ docker system prune
 
 ## Beyond the App: Adding Redis
 
+### Using docker run
+
+To start a Redis server with docker run, we’d issue the following command:
+
+```text
+$ docker run --name redis-container redis
+```
+
+{% code-tabs %}
+{% code-tabs-item title="docker-compose.yml" %}
+```text
+version: '3'
+
+services:
+
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+  redis:
+    image: redis
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+Now, let’s start our Redis server:
+
+```text
+$ docker-compose up -d redis
+$ docker-compose logs redis
+```
+
