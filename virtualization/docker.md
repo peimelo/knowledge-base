@@ -71,7 +71,7 @@ Create a Dockerfile with:
 
 {% code-tabs %}
 {% code-tabs-item title="Dockerfile" %}
-```text
+```bash
 FROM ruby:2.6
   
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
@@ -113,7 +113,7 @@ $ docker run -p 3000:3000 123456789999 bin/rails s -b 0.0.0.0
 
 ## Fine-Tuning Our Rails Image
 
-```text
+```bash
 $ docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 <none>              <none>              123456789999        8 minutes ago       1.1GB
@@ -151,7 +151,7 @@ $ docker run -p 3000:3000 railsapp:1.0 bin/rails s -b 0.0.0.0
 
 {% code-tabs %}
 {% code-tabs-item title="Dockerfile" %}
-```text
+```bash
 FROM ruby:2.6
   
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
@@ -217,7 +217,7 @@ $ docker build -t railsapp .
 
 {% code-tabs %}
 {% code-tabs-item title="Dockerfile" %}
-```text
+```bash
 FROM ruby:2.6
 
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | \
@@ -244,7 +244,7 @@ CMD ["bin/rails", "s", "-b", "0.0.0.0"]
 
 {% code-tabs %}
 {% code-tabs-item title="Dockerfile" %}
-```text
+```bash
 FROM ruby:2.6.4
 
 LABEL maintainer="peimelo@gmail.com"
@@ -279,7 +279,7 @@ CMD ["bin/rails", "s", "-b", "0.0.0.0"]
 
 {% code-tabs %}
 {% code-tabs-item title="docker-compose.yml" %}
-```text
+```yaml
 version: '3'
 
 services:
@@ -323,7 +323,7 @@ A mounted local volume represents some filesystem that’s shared between your l
 
 {% code-tabs %}
 {% code-tabs-item title="docker-compose.yml" %}
-```text
+```yaml
 version: '3'
 
 services:
@@ -394,7 +394,7 @@ $ docker run --name redis-container redis
 
 {% code-tabs %}
 {% code-tabs-item title="docker-compose.yml" %}
-```text
+```yaml
 version: '3'
 
 services:
@@ -417,4 +417,97 @@ Now, let’s start our Redis server:
 $ docker-compose up -d redis
 $ docker-compose logs redis
 ```
+
+### Manually Connecting to the Redis Server
+
+```text
+$ docker-compose run --rm redis redis-cli -h redis
+
+-h: says "Connect to the host named redis"
+```
+
+### How Containers Can Talk to Each Other
+
+Let's list our currently defined network using the command:
+
+```text
+$ docker network ls
+```
+
+### Installing the Redis Gem
+
+{% code-tabs %}
+{% code-tabs-item title="Gemfile" %}
+```text
+gem 'redis', '~> 4.0'
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+```bash
+$ docker-compose stop web
+$ docker-compose build web
+$ docker-compose up -d web
+```
+
+### Updating Our Rails App to User Redis
+
+```text
+$ docker-compose exec web bin/rails g controller welcome index
+```
+
+{% code-tabs %}
+{% code-tabs-item title="app/controllers/welcome\_controller.rb" %}
+```markup
+class WelcomeController < ApplicationController
+  def index
+    redis = Redis.new(host: 'redis', port: 6379)
+    redis.incr 'page hits'
+
+    @page_hits = redis.get 'page hits'
+  end
+end
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+{% code-tabs %}
+{% code-tabs-item title="app/views/welcome/index.html.erb" %}
+```ruby
+<h1>This page has been viewed <%= pluralize(@page_hits, 'time') %>!</h1>
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+{% code-tabs %}
+{% code-tabs-item title="config/routes.rb" %}
+```ruby
+Rails.application.routes.draw do
+  get 'welcome', to: 'welcome#index'
+end
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+Now let's visit in the browser at [http://localhost:3000/welcome](http://localhost:3000/welcome)🥳 
+
+### Starting the Entire App with Docker Compose
+
+```text
+$ docker-compose stop
+$ docker-compose ps
+    Name                  Command               State    Ports
+--------------------------------------------------------------
+blog_redis_1   docker-entrypoint.sh redis ...   Exit 0        
+blog_web_1     bin/rails s -b 0.0.0.0           Exit 1       
+
+$ docker-compose up -d
+$ docker-compose ps
+    Name                  Command               State           Ports         
+------------------------------------------------------------------------------
+blog_redis_1   docker-entrypoint.sh redis ...   Up      6379/tcp              
+blog_web_1     bin/rails s -b 0.0.0.0           Up      0.0.0.0:3000->3000/tcp
+```
+
+## Adding a Database: Postgres
 
