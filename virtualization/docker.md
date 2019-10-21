@@ -511,3 +511,212 @@ blog_web_1     bin/rails s -b 0.0.0.0           Up      0.0.0.0:3000->3000/tcp
 
 ## Adding a Database: Postgres
 
+### Starting a Postgress Server
+
+{% code-tabs %}
+{% code-tabs-item title="docker-compose.yml" %}
+```text
+version: '3'
+
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+
+  redis:
+    image: redis
+
+  database:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: some-long-secure-password
+      POSTGRES_DB: myapp_development
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+```text
+$ docker-compose up -d database
+$ docker-compose ps
+$ docker-compose logs database
+```
+
+### Connecting to Postgres from a Separate Container
+
+```text
+$ docker-compose run --rm database psql -U postgres -h database
+```
+
+### Connecting Our Rails app to Postgres
+
+{% code-tabs %}
+{% code-tabs-item title="Gemfile" %}
+```text
+gem 'pg', '~> 1.0'
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+```text
+$ docker-compose stop web
+$ docker-compose build web
+```
+
+### Creating Our App Database
+
+{% code-tabs %}
+{% code-tabs-item title="database.yml" %}
+```yaml
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: <%= ENV.fetch('DATABASE_HOST') %>
+  username: <%= ENV.fetch('POSTGRES_USER') %>
+  password: <%= ENV.fetch('POSTGRES_PASSWORD') %>
+  database: <%= ENV.fetch('POSTGRES_DB') %>
+  pool: 5
+  variables:
+    statement_timeout: 5000
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+  database: blog_test
+
+production:
+  <<: *default
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+```yaml
+version: '3'
+
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+    environment:
+      DATABASE_HOST: database
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: some-long-secure-password
+      POSTGRES_DB: myapp_development
+
+  redis:
+    image: redis
+
+  database:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: some-long-secure-password
+      POSTGRES_DB: myapp_development
+```
+
+```text
+$ mkdir -p .env/development
+```
+
+{% code-tabs %}
+{% code-tabs-item title=".env/development/web" %}
+```text
+DATABASE_HOST=database
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+{% code-tabs %}
+{% code-tabs-item title=".env/development/database" %}
+```bash
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=some-long-secure-password
+POSTGRES_DB=blog_development
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+{% code-tabs %}
+{% code-tabs-item title="docker-compose.yml" %}
+```yaml
+version: '3'
+
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+    env_file:
+      - .env/development/database
+      - .env/development/web
+
+  redis:
+    image: redis
+
+  database:
+    image: postgres
+    env_file:
+      - .env/development/database
+
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+```text
+$ docker-compose run --rm web bin/rails db:create
+$ docker-compose up -d --force-recreate web
+```
+
+### Using the Database in Practice
+
+```bash
+$ docker-compose exec web \
+    bin/rails g scaffold User first_name:string last_name:string
+$ docker-compose exec web bin/rails db:migrate
+```
+
+### Decoupling Data From the Container
+
+{% code-tabs %}
+{% code-tabs-item title="docker-compose.yml" %}
+```text
+version: '3'
+
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+    env_file:
+      - .env/development/database
+      - .env/development/web
+
+  redis:
+    image: redis
+
+  database:
+    image: postgres
+    env_file:
+      - .env/development/database
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      
+volumes:
+  db_data:
+
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
