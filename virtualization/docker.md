@@ -720,3 +720,17 @@ volumes:
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
+```text
+$ docker-compose stop database
+$ docker-compose rm -f database
+$ docker-compose up -d database
+$ docker-compose exec web bin/rails db:create db:migrate
+
+# data still
+$ docker-compose stop database
+$ docker-compose rm database
+$ docker-compose up -d database
+```
+
+## Playing Nice with JavaScript
+
