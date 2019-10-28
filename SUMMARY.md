@@ -14,3 +14,7 @@
 
 * [Untitled](homebrew/untitled.md)
 
+## Ruby on Rails
+
+* [Credentials](ruby-on-rails/credentials.md)
+
